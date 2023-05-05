@@ -162,7 +162,6 @@ canvas.addEventListener('touchmove', (e)=>{
         figura.draw();
     }
 })
-asd
 document.addEventListener('keypress', (e)=>{
     console.log(e);
 })
