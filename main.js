@@ -68,6 +68,7 @@ function pickUtil(value){ //Cambiamos las vandera en base a que util se seleccio
         tamanio_utiles[i].addEventListener('click', (e)=>{
              //Esto es para que todos los inputs range (inputs de tamaño), esten "conectados" con el tamaño definido
             setTamanio(e.target.value);
+            console.log(e.target.value);
         });
     }
 
@@ -99,7 +100,7 @@ function pickUtil(value){ //Cambiamos las vandera en base a que util se seleccio
 // end utiles
 
 
-//Eventos para PC
+//Eventos para Mouse
 canvas.addEventListener('mousedown', (e)=>{
     //Agregamos unas condiciones en base a las banderas (Para ir cambiando de utiles)
     if (cursor == true) {
@@ -128,52 +129,82 @@ canvas.addEventListener('mousemove', (e)=>{
         figura.draw();
     }
 })
-//end Eventos para PC
+//end Eventos para Mouse
 
-//Eventos para movil
-canvas.addEventListener('touchstart', (e)=>{
-    //Agregamos unas condiciones en base a las banderas (Para ir cambiando de utiles)
-    console.log("hola me tocaron");
-    if (cursor == true) {
-        // SELECCIONAR 
-    }
-    if (lapiz == true) {
-        figura = new Pen(e.layerX,e.layerY,color,context,"circulo",Ttrazo);
-        figura.draw();
-    }
-    if(goma == true){
-        figura = new Gum(e.layerX,e.layerY,'white',context, "cuadrado" ,Ttrazo);
-        figura.draw();
-    }
-    mouseDown = true;
-    mouseUp = false;
-})
-canvas.addEventListener('touchend', (e)=>{
-    console.log("soltaste");
-    mouseDown = false;
-    mouseUp = true;
-    figura = null;
-})
+//Eventos para movil EN DESARROLLO
+// canvas.addEventListener('touchstart', (e)=>{
+//     //Agregamos unas condiciones en base a las banderas (Para ir cambiando de utiles)
+//     console.log("hola me tocaron");
+//     if (cursor == true) {
+//         // SELECCIONAR 
+//     }
+//     if (lapiz == true) {
+//         figura = new Pen(e.layerX,e.layerY,color,context,"circulo",Ttrazo);
+//         figura.draw();
+//     }
+//     if(goma == true){
+//         figura = new Gum(e.layerX,e.layerY,'white',context, "cuadrado" ,Ttrazo);
+//         figura.draw();
+//     }
+//     mouseDown = true;
+//     mouseUp = false;
+// })
+// canvas.addEventListener('touchend', (e)=>{
+//     console.log("soltaste");
+//     mouseDown = false;
+//     mouseUp = true;
+//     figura = null;
+// })
 
-canvas.addEventListener('touchmove', (e)=>{
-    console.log("te moves");
-    if(mouseDown == true && figura != null){ // preguntamos si se apreta el cursor
-        figura.moveTo(e.layerX,e.layerY);
-        figura.draw();
-    }
-})
-document.addEventListener('keypress', (e)=>{
-    console.log(e);
-})
+// canvas.addEventListener('touchmove', (e)=>{
+//     console.log("te moves");
+//     if(mouseDown == true && figura != null){ // preguntamos si se apreta el cursor
+//         figura.moveTo(e.layerX,e.layerY);
+//         figura.draw();
+//     }
+// })
+// document.addEventListener('keypress', (e)=>{
+//     console.log(e);
+// })
 // end Eventos para movil
 
 
+// Funcionalidad de imagen capturada desde archivos
+
+let tImg = null;
+let imagenes = [];
+
+let tamanio_img = document.getElementById('tamanio_img').addEventListener('input',(e)=>{
+        tImg = e.target.value;
+})
+let archImg = document.getElementById('file');
+    archImg.addEventListener('change', (e)=>{
+    let img = new Image();
+    img.src = URL.createObjectURL(e.target.files[0]);
+    img.onload = function(){
+        let imgWidth = (this.width * tImg) * (canvasWidth / 1215) ;
+        let imgHeigth = (this.height * tImg) * (canvasWidth / 1215);
+        context.drawImage(img, (canvasWidth / 2) - (imgWidth / 2), (canvasHeigth / 2)  - (imgHeigth / 2),imgWidth ,imgHeigth);
+        imagenes.push(img);
+        archImg.value = null;
+        img = null;
+    }
+})
+
+
+//end Funcionalidad de imagen capturada desde archivos
+
+
+
+// Seteo de valores predeterminados
 setTamanio(50);
 setColor("black");
 context.fillStyle='white';
 context.fillRect(0,0, canvasWidth, canvasHeigth);
+// end Seteo de valores predeterminados
 
 
+//funcionalidad de botones
 let f = false;
 let btn_togle = document.getElementById('btn_togle').addEventListener('click', (e)=>{
     let arrow = document.getElementById('arrow');
@@ -189,7 +220,7 @@ let btn_togle = document.getElementById('btn_togle').addEventListener('click', (
     console.log("Ancho: " + windowWidth + " Altura: " + windowHeight);
     
 });
-
+//end funcionalidad de botones
 
 
 
