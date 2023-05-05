@@ -99,7 +99,7 @@ function pickUtil(value){ //Cambiamos las vandera en base a que util se seleccio
 // end utiles
 
 
-
+//Eventos para PC
 canvas.addEventListener('mousedown', (e)=>{
     //Agregamos unas condiciones en base a las banderas (Para ir cambiando de utiles)
     if (cursor == true) {
@@ -128,6 +128,47 @@ canvas.addEventListener('mousemove', (e)=>{
         figura.draw();
     }
 })
+//end Eventos para PC
+
+//Eventos para movil
+canvas.addEventListener('touchstart', (e)=>{
+    //Agregamos unas condiciones en base a las banderas (Para ir cambiando de utiles)
+    console.log("hola me tocaron");
+    if (cursor == true) {
+        // SELECCIONAR 
+    }
+    if (lapiz == true) {
+        figura = new Pen(e.layerX,e.layerY,color,context,"circulo",Ttrazo);
+        figura.draw();
+    }
+    if(goma == true){
+        figura = new Gum(e.layerX,e.layerY,'white',context, "cuadrado" ,Ttrazo);
+        figura.draw();
+    }
+    mouseDown = true;
+    mouseUp = false;
+})
+canvas.addEventListener('touchend', (e)=>{
+    console.log("soltaste");
+    mouseDown = false;
+    mouseUp = true;
+    figura = null;
+})
+
+canvas.addEventListener('touchmove', (e)=>{
+    console.log("te moves");
+    if(mouseDown == true && figura != null){ // preguntamos si se apreta el cursor
+        figura.moveTo(e.layerX,e.layerY);
+        figura.draw();
+    }
+})
+asd
+document.addEventListener('keypress', (e)=>{
+    console.log(e);
+})
+// end Eventos para movil
+
+
 setTamanio(50);
 setColor("black");
 context.fillStyle='white';
