@@ -94,7 +94,7 @@ function pickUtil(value){ //Cambiamos las vandera en base a que util se seleccio
     //end Color de Utiles
 
     //Tipo de trazo
-    let tipoTrazo;
+    //let tipoTrazo;
     //end Tipo de trazo
 // end utiles
 
@@ -128,7 +128,7 @@ canvas.addEventListener('mousemove', (e)=>{
         figura.draw();
     }
 })
-setTamanio(2);
+setTamanio(50);
 setColor("black");
 context.fillStyle='white';
 context.fillRect(0,0, canvasWidth, canvasHeigth);
