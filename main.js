@@ -1,4 +1,5 @@
 import Gum from './js/gum.js';
+import Imagen from './js/imagen.js';
 import Pen from './js/pen.js';
 
 let windowWidth = window.innerWidth;
@@ -132,41 +133,43 @@ canvas.addEventListener('mousemove', (e)=>{
 //end Eventos para Mouse
 
 //Eventos para movil EN DESARROLLO
-// canvas.addEventListener('touchstart', (e)=>{
-//     //Agregamos unas condiciones en base a las banderas (Para ir cambiando de utiles)
-//     console.log("hola me tocaron");
-//     if (cursor == true) {
-//         // SELECCIONAR 
-//     }
-//     if (lapiz == true) {
-//         figura = new Pen(e.layerX,e.layerY,color,context,"circulo",Ttrazo);
-//         figura.draw();
-//     }
-//     if(goma == true){
-//         figura = new Gum(e.layerX,e.layerY,'white',context, "cuadrado" ,Ttrazo);
-//         figura.draw();
-//     }
-//     mouseDown = true;
-//     mouseUp = false;
-// })
-// canvas.addEventListener('touchend', (e)=>{
-//     console.log("soltaste");
-//     mouseDown = false;
-//     mouseUp = true;
-//     figura = null;
-// })
+canvas.addEventListener('touchstart', (e)=>{
+    // e.preventDefault();
+    //Agregamos unas condiciones en base a las banderas (Para ir cambiando de utiles)
+    if (cursor == true) {
+        // SELECCIONAR 
+    }
+    if (lapiz == true) {
+        console.log("apretaste lapiz");
+        figura = new Pen(e.targetTouches[0].clientX,e.targetTouches[0].clientY,color,context,"circulo",Ttrazo);
+        figura.draw();
+    }
+    if(goma == true){
+        figura = new Gum(e.targetTouches[0].clientX,e.targetTouches[0].clientY,'white',context, "cuadrado" ,Ttrazo);
+        figura.draw();
+    }
+    mouseDown = true;
+    mouseUp = false;
+})
+canvas.addEventListener('touchend', (e)=>{
+    console.log("soltaste");
+    mouseDown = false;
+    mouseUp = true;
+    figura = null;
+})
 
-// canvas.addEventListener('touchmove', (e)=>{
-//     console.log("te moves");
-//     if(mouseDown == true && figura != null){ // preguntamos si se apreta el cursor
-//         figura.moveTo(e.layerX,e.layerY);
-//         figura.draw();
-//     }
-// })
-// document.addEventListener('keypress', (e)=>{
-//     console.log(e);
-// })
+canvas.addEventListener('touchmove', (e)=>{
+    if(mouseDown == true && figura != null){ // preguntamos si se apreta el cursor
+        // e.preventDefault();
+        console.log(e.targetTouches[0].clientX,e.targetTouches[0].clientY);
+        figura.moveTo(e.targetTouches[0].clientX,e.targetTouches[0].clientY);
+        figura.draw();
+    }
+})
+
 // end Eventos para movil
+
+
 
 
 // Funcionalidad de imagen capturada desde archivos
@@ -179,16 +182,11 @@ let tamanio_img = document.getElementById('tamanio_img').addEventListener('input
 })
 let archImg = document.getElementById('file');
     archImg.addEventListener('change', (e)=>{
-    let img = new Image();
-    img.src = URL.createObjectURL(e.target.files[0]);
-    img.onload = function(){
-        let imgWidth = (this.width * tImg) * (canvasWidth / 1215) ;
-        let imgHeigth = (this.height * tImg) * (canvasWidth / 1215);
-        context.drawImage(img, (canvasWidth / 2) - (imgWidth / 2), (canvasHeigth / 2)  - (imgHeigth / 2),imgWidth ,imgHeigth);
-        imagenes.push(img);
-        archImg.value = null;
-        img = null;
-    }
+    let img = new Imagen(context, canvasWidth, canvasHeigth, tImg);
+    img.crearImagen(e);
+    imagenes.push(img);
+    archImg.value = null;
+    console.log(imagenes);
 })
 
 
@@ -196,12 +194,7 @@ let archImg = document.getElementById('file');
 
 
 
-// Seteo de valores predeterminados
-setTamanio(50);
-setColor("black");
-context.fillStyle='white';
-context.fillRect(0,0, canvasWidth, canvasHeigth);
-// end Seteo de valores predeterminados
+
 
 
 //funcionalidad de botones
@@ -227,4 +220,9 @@ let btn_togle = document.getElementById('btn_togle').addEventListener('click', (
 
 
 
- 
+// Seteo de valores predeterminados
+setTamanio(50);
+setColor("black");
+context.fillStyle='white';
+context.fillRect(0,0, canvasWidth, canvasHeigth);
+// end Seteo de valores predeterminados
